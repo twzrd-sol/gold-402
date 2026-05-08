@@ -39,6 +39,8 @@ This is the governance story behind April's news. The formation of a neutral fou
 - [**Coinbase usage-based pricing for agentic compute**](https://coinspectator.com/cryptonews/2026/04/10/coinbase-moves-x402-protocol-to-usage-based-model-for-agentic-ai-tasks/) — New pricing model lets AI agents pay for compute resources based on actual usage rather than fixed rates. Aligns cost with value at the per-task level.
 - [**x402 V2 retrospective: 100M+ real-world transactions**](https://www.cobo.com/post/what-is-x402) — x402 V2 launched December 2025 with multi-chain support and scalable SDK architecture. Now documented with production data from 100M+ transactions.
 - [**Visa Intelligent Commerce + x402 live**](https://pinionnewswire.com/press-release/nevermineds-visa-intelligent-commerce-x402-integration-unlocks-agentic-commerce/) — AI agents can now spend delegated credit card authority via Visa TAP + x402. First traditional credit rail integrated at the protocol level.
+- [**Dexter DAO becomes #1 x402 facilitator by volume**](https://github.com/Dexter-DAO/dexter-x402-sdk) — Decentralized facilitator surpassed Coinbase in daily transaction volume and now handles approximately 50% of x402 traffic. Chain-agnostic v2 SDK with client, server, React hooks, and Express middleware.
+- [**AWS Bedrock AgentCore Payments launches in preview**](https://aws.amazon.com/blogs/industries/x402-and-agentic-commerce-redefining-autonomous-payments-in-financial-services/) — AWS-managed x402 wallet and payment infrastructure natively integrated into Amazon Bedrock agent workflows, with policy controls and audit trails. Launched May 7, 2026.
 
 ---
 
@@ -133,6 +135,8 @@ Facilitators verify payment headers and settle transactions on-chain. Production
 | [Polygon x402](https://polygon.technology/payments/agentic-payments) [![24K Verified](https://img.shields.io/badge/24K_Verified-2026--04-D4AF37?style=plastic)](CONTRIBUTING.md#24k-verified-tier) | Polygon | Now leading Base in daily transaction count. MATIC fee subsidies for agentic payments. |
 | [Stellar x402](https://docs.stellar.org/x402) [![24K Verified](https://img.shields.io/badge/24K_Verified-2026--04-D4AF37?style=plastic)](CONTRIBUTING.md#24k-verified-tier) | XLM | Fastest finality in the ecosystem. Added March 2026. |
 | [AsterPay](https://asterpay.io) [![MiCA](https://img.shields.io/badge/MiCA-aware-0550AE?style=plastic)](https://asterpay.io) [![ERC-8004](https://img.shields.io/badge/ERC--8004-registered-E36209?style=plastic)](https://asterpay.io) | Base, ETH | EU/MiCA-compliant facilitator for European enterprise deployments. |
+| [Dexter DAO](https://github.com/Dexter-DAO/dexter-x402-sdk) [![24K Verified](https://img.shields.io/badge/24K_Verified-2026--05-D4AF37?style=plastic)](CONTRIBUTING.md#24k-verified-tier) [![Open Source](https://img.shields.io/badge/Open_Source-2EA44F?style=plastic)](https://github.com/Dexter-DAO/dexter-x402-sdk) | Base, ETH, SOL, + | Largest x402 facilitator by volume. Handles ~50% of daily transactions. Chain-agnostic v2 SDK with client, server, React hooks, and Express middleware. |
+| [Ultravioleta DAO](https://facilitator.ultravioletadao.xyz) [![Multi-Chain](https://img.shields.io/badge/Multi--Chain-33+-0366D6?style=plastic)](https://facilitator.ultravioletadao.xyz) | EVM, SOL, NEAR, XLM, ALGO, SUI, + | Broadest multi-chain coverage in the ecosystem. 33+ networks including non-EVM chains. REST API with chain-specific settlement routing. |
 
 [Full facilitator directory →](directory/facilitators.md)
 
@@ -148,6 +152,8 @@ Facilitators verify payment headers and settle transactions on-chain. Production
 | [ag402](https://github.com/AetherCore-Dev/ag402) [![24K Verified](https://img.shields.io/badge/24K_Verified-2026--04-D4AF37?style=plastic)](CONTRIBUTING.md#24k-verified-tier) [![Open Source](https://img.shields.io/badge/Open_Source-2EA44F?style=plastic)](https://github.com/AetherCore-Dev/ag402) | Go/Python | Multi-language. Wrap any API with `ag402 serve`, auto-pay with `ag402 run`. Solana USDC. |
 | [x402-mcp](https://vercel.com/blog/introducing-x402-mcp-open-protocol-payments-for-mcp-tools) [![24K Verified](https://img.shields.io/badge/24K_Verified-2026--04-D4AF37?style=plastic)](CONTRIBUTING.md#24k-verified-tier) | TypeScript | Vercel AI SDK `paidTool` primitive. The cleanest path for AI SDK builders. |
 | [MoltsPay](https://github.com/moltspay/molts-pay) [![Open Source](https://img.shields.io/badge/Open_Source-2EA44F?style=plastic)](https://github.com/moltspay/molts-pay) [![Multi-Chain](https://img.shields.io/badge/Multi--Chain-3+-0366D6?style=plastic)](https://github.com/moltspay/molts-pay) | TypeScript | Multi-framework (Express, Hono, Fastify, Next.js). Base + Solana + ETH. Drop-in replacement. |
+| [Mogami](https://mogami.tech) [![Open Source](https://img.shields.io/badge/Open_Source-2EA44F?style=plastic)](https://github.com/mogami-tech/x402-mcp-server) | Java | Production-ready Java x402 stack with SDK, server, console, and bundled MCP server. Fills the Java gap in the official ecosystem. |
+| [Solana Foundation Pay](https://github.com/solana-foundation/pay) [![Open Source](https://img.shields.io/badge/Open_Source-2EA44F?style=plastic)](https://github.com/solana-foundation/pay) | TypeScript | Official Solana Foundation library for handling x402 and MPP payment challenges with user-authorized stablecoin signing. Updated May 2026. |
 
 [Full SDK directory →](directory/sdks.md) · [Framework middleware →](directory/frameworks.md)
 
@@ -186,6 +192,7 @@ x402-payable APIs — pay per request, no subscriptions.
 | [Arch Tools](https://archtools.io) [![24K Verified](https://img.shields.io/badge/24K_Verified-2026--04-D4AF37?style=plastic)](CONTRIBUTING.md#24k-verified-tier) | Per-call | 27 on-chain tools. Portfolio analysis, NFT data, market intelligence on Base. |
 | [ShieldAPI](https://shield.vainplex.dev) [![24K Verified](https://img.shields.io/badge/24K_Verified-2026--04-D4AF37?style=plastic)](CONTRIBUTING.md#24k-verified-tier) [![Open Source](https://img.shields.io/badge/Open_Source-2EA44F?style=plastic)](https://github.com/alberthild/shieldapi-mcp) | $0.002–$0.05 | Security intelligence: breach check, domain reputation, URL safety, prompt injection detection. |
 | [Valoria](https://x402.valoria.net) | — | Market intelligence: 90K+ indexed services, $148M+ tracked on-chain volume, revenue rankings. |
+| [Firecrawl x402](https://api.firecrawl.dev/v1/x402/search) [![24K Verified](https://img.shields.io/badge/24K_Verified-2026--05-D4AF37?style=plastic)](CONTRIBUTING.md#24k-verified-tier) | Per-request | Web scraping and search API with x402-gated endpoints and automatic on-chain USDC settlement. Coinbase CDP case study service. |
 
 [Full API directory →](directory/apis.md)
 
@@ -202,6 +209,8 @@ x402-payable APIs — pay per request, no subscriptions.
 | [x402scan](https://x402scan.com) [![24K Verified](https://img.shields.io/badge/24K_Verified-2026--04-D4AF37?style=plastic)](CONTRIBUTING.md#24k-verified-tier) | Block explorer for x402 payments. Transaction search, payment requirement inspection, settlement status. |
 | [24K Labs GitHub Action](https://github.com/Haustorium12/24klabs-action) [![24K Verified](https://img.shields.io/badge/24K_Verified-2026--04-D4AF37?style=plastic)](CONTRIBUTING.md#24k-verified-tier) [![Open Source](https://img.shields.io/badge/Open_Source-2EA44F?style=plastic)](https://github.com/Haustorium12/24klabs-action) | AI code review + security audit on every PR via x402 micropayments. Drop into any GitHub Actions workflow. |
 | [Agent Forensics](https://www.npmjs.com/package/agent-forensics) | Claude Code cost observability. Analyzes JSONL session logs: per-model cost breakdown, cache efficiency, waste patterns. Free CLI. |
+| [x402station](https://x402station.com) [![24K Verified](https://img.shields.io/badge/24K_Verified-2026--05-D4AF37?style=plastic)](CONTRIBUTING.md#24k-verified-tier) | Real-time monitoring and discovery for 20,000+ x402 endpoints. Continuous health probes every 10 minutes. MCP server for agent access included. |
+| [AWS CloudFront x402 sample](https://github.com/aws-samples/sample-x402-content-monetization-with-cloudfront-and-waf) [![Open Source](https://img.shields.io/badge/Open_Source-2EA44F?style=plastic)](https://github.com/aws-samples/sample-x402-content-monetization-with-cloudfront-and-waf) | AWS-published reference implementation for monetizing content behind CloudFront and WAF with x402 and USDC payments. |
 
 [Full tools directory →](directory/tools.md)
 

@@ -67,7 +67,14 @@ Client and server-side libraries for building with x402. Start with the official
 
 ---
 
+## Java
+
+- [Mogami](https://mogami.tech) [![Open Source](https://img.shields.io/badge/Open_Source-2EA44F?style=plastic)](https://github.com/mogami-tech/x402-mcp-server) — Production-ready Java x402 stack. Includes SDK, server, console, and a bundled MCP server for Claude and OpenAI. Fills the Java gap in the official x402 ecosystem.
+
+---
+
 ## Other Languages
 
 - [genlayer-x402](https://github.com/habiiyt31/genlayer-x402) — x402 for GenLayer Intelligent Contracts. 4 production-ready on-chain contracts gating real-time web data and AI services behind trustless payments. No server, no API key, no middleman.
-- [Spillway](https://github.com/openledger-labs/Spillway) — Subscription payment channels on Stellar using x402. Stream payments, not transactions — 1,000 requests = only 2 on-chain transactions.
+- [Spillway](https://github.com/openledger-labs/Spillway) — Subscription payment channels on Stellar using x402.
+- [Solana Foundation Pay](https://github.com/solana-foundation/pay) [![Open Source](https://img.shields.io/badge/Open_Source-2EA44F?style=plastic)](https://github.com/solana-foundation/pay) — Official Solana Foundation library for handling x402 and MPP payment challenges with user-authorized stablecoin signing. Updated May 2026. Stream payments, not transactions — 1,000 requests = only 2 on-chain transactions.
