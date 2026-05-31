@@ -1,0 +1,60 @@
+name: Harvest CDP Bazaar
+
+on:
+  schedule:
+    # Daily at 02:00 UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  harvest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run harvest
+        run: python scripts/harvest.py
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name  "gold-402-bot"
+          git config user.email "gold-402-bot@24klabs.ai"
+          git add directory/services.json
+          if git diff --cached --quiet; then
+            echo "No changes -- services.json unchanged"
+          else
+            COUNT=$(python -c "import json; d=json.load(open('directory/services.json')); print(d['count'])")
+            git commit -m "harvest: CDP Bazaar update (${COUNT} services)"
+            git push
+          fi
+
+      - name: Harvest summary
+        if: always()
+        run: |
+          if [ -f directory/services.json ]; then
+            python -c "
+import json
+d = json.load(open('directory/services.json'))
+svcs = d.get('services', [])
+by_type = {}
+for s in svcs:
+    t = s.get('type', 'Unknown')
+    by_type[t] = by_type.get(t, 0) + 1
+print(f'Total: {d[\"count\"]}')
+print(f'Generated: {d[\"generated_at\"]}')
+print('By type:')
+for t, c in sorted(by_type.items(), key=lambda x: -x[1]):
+    print(f'  {t}: {c}')
+"
+          fi

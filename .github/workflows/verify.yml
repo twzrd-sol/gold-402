@@ -1,0 +1,69 @@
+name: Verify Services
+
+on:
+  schedule:
+    # Monthly on the 1st at 03:00 UTC
+    - cron: '0 3 1 * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run verification crawler
+        run: python scripts/verify.py
+
+      - name: Commit and push results
+        run: |
+          git config user.name  "gold-402-bot"
+          git config user.email "gold-402-bot@24klabs.ai"
+          git add directory/services.json
+          if git diff --cached --quiet; then
+            echo "No changes after verification run"
+          else
+            VERIFIED=$(python -c "
+import json
+d = json.load(open('directory/services.json'))
+svcs = d.get('services', [])
+v = sum(1 for s in svcs if s.get('verified'))
+f = sum(1 for s in svcs if s.get('verify_status') == 'failed')
+i = sum(1 for s in svcs if s.get('status') == 'inactive')
+print(f'verified={v} failed={f} delisted={i}')
+")
+            git commit -m "verify: monthly probe run -- ${VERIFIED}"
+            git push
+          fi
+
+      - name: Verification summary
+        if: always()
+        run: |
+          if [ -f directory/services.json ]; then
+            python -c "
+import json
+d = json.load(open('directory/services.json'))
+svcs = d.get('services', [])
+total    = len(svcs)
+active   = sum(1 for s in svcs if s.get('status') == 'active')
+verified = sum(1 for s in svcs if s.get('verified'))
+failed   = sum(1 for s in svcs if s.get('verify_status') == 'failed')
+timeout  = sum(1 for s in svcs if s.get('verify_status') == 'timeout')
+pending  = sum(1 for s in svcs if s.get('verify_status') == 'pending')
+inactive = sum(1 for s in svcs if s.get('status') == 'inactive')
+print(f'Total: {total}')
+print(f'Active: {active} | Verified: {verified} | Failed: {failed}')
+print(f'Timeout: {timeout} | Pending: {pending} | Delisted: {inactive}')
+"
+          fi
