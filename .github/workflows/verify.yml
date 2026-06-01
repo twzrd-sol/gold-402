@@ -34,36 +34,11 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes after verification run"
           else
-            VERIFIED=$(python -c "
-import json
-d = json.load(open('directory/services.json'))
-svcs = d.get('services', [])
-v = sum(1 for s in svcs if s.get('verified'))
-f = sum(1 for s in svcs if s.get('verify_status') == 'failed')
-i = sum(1 for s in svcs if s.get('status') == 'inactive')
-print(f'verified={v} failed={f} delisted={i}')
-")
-            git commit -m "verify: monthly probe run -- ${VERIFIED}"
+            SUMMARY=$(python scripts/verify_summary.py commit)
+            git commit -m "verify: monthly probe run -- ${SUMMARY}"
             git push
           fi
 
-      - name: Verification summary
+      - name: Print verification summary
         if: always()
-        run: |
-          if [ -f directory/services.json ]; then
-            python -c "
-import json
-d = json.load(open('directory/services.json'))
-svcs = d.get('services', [])
-total    = len(svcs)
-active   = sum(1 for s in svcs if s.get('status') == 'active')
-verified = sum(1 for s in svcs if s.get('verified'))
-failed   = sum(1 for s in svcs if s.get('verify_status') == 'failed')
-timeout  = sum(1 for s in svcs if s.get('verify_status') == 'timeout')
-pending  = sum(1 for s in svcs if s.get('verify_status') == 'pending')
-inactive = sum(1 for s in svcs if s.get('status') == 'inactive')
-print(f'Total: {total}')
-print(f'Active: {active} | Verified: {verified} | Failed: {failed}')
-print(f'Timeout: {timeout} | Pending: {pending} | Delisted: {inactive}')
-"
-          fi
+        run: python scripts/verify_summary.py full
