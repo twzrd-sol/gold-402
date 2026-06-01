@@ -53,9 +53,7 @@ jobs:
 
       - name: Run submission check
         id: check
-        run: |
-          python scripts/submit_check.py "${{ steps.extract_url.outputs.url }}"
-          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+        run: python scripts/submit_check.py "${{ steps.extract_url.outputs.url }}"
 
       - name: Read check result
         id: result

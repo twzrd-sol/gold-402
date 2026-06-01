@@ -60,17 +60,27 @@ def is_private_ip(hostname):
 
 
 def check_already_listed(resource_url):
-    """Return True if this URL is already in CDP Bazaar / services.json."""
+    """Return True if this exact endpoint URL is already listed.
+    Matches on full URL (scheme+host+path), not just the base host.
+    Same host with a different path = different service = not a duplicate.
+    """
     try:
         with open(SERVICES_PATH, "r", encoding="utf-8") as f:
             data = json.load(f)
         services = data.get("services", [])
-        low = resource_url.lower().rstrip("/")
+        parsed  = urllib.parse.urlparse(resource_url)
+        low_host = parsed.netloc.lower().lstrip("www.")
+        low_path = parsed.path.lower().rstrip("/")
         for s in services:
-            for field in ("api_base_url", "website_url"):
-                val = (s.get(field) or "").lower().rstrip("/")
-                if val and (val == low or low.startswith(val)):
-                    return True, s.get("source", "unknown")
+            # Build full URL from stored fields for comparison
+            base = (s.get("api_base_url") or "").lower().rstrip("/")
+            path = (s.get("endpoint_path") or "").lower().rstrip("/")
+            stored_parsed = urllib.parse.urlparse(base)
+            stored_host   = stored_parsed.netloc.lower().lstrip("www.")
+            stored_path   = path or stored_parsed.path.lower().rstrip("/")
+            # Exact match on host + path
+            if stored_host == low_host and stored_path == low_path:
+                return True, s.get("source", "unknown")
         return False, None
     except Exception:
         return False, None
