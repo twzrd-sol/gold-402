@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-06-02T03:12:38Z",
+  "generated_at": "2026-06-02T03:19:51Z",
   "total_services": 40305,
-  "slice_count": 44,
-  "total_slice_size_bytes": 36417905,
+  "slice_count": 45,
+  "total_slice_size_bytes": 36501064,
   "slices": [
     {
       "filename": "directory-aggregator.json",
@@ -355,6 +355,15 @@
       "letter_range": null,
       "count": 688,
       "size_bytes": 562138
+    },
+    {
+      "filename": "featured.json",
+      "type": null,
+      "tag": null,
+      "letter_range": null,
+      "count": 100,
+      "size_bytes": 83159,
+      "kind": "featured"
     }
   ]
 }

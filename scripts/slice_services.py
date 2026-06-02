@@ -291,7 +291,38 @@ def main():
                     "size_bytes": size,
                 })
 
-    # --- Pass 3: manifest ---
+    # --- Pass 3: featured slice (top N by quality_payers_30d, fallback quality_calls_30d) ---
+    print("\nFeatured slice (top 100 by quality):")
+
+    def quality_key(s):
+        return (s.get("quality_payers_30d") or 0, s.get("quality_calls_30d") or 0)
+
+    ranked = [s for s in services if quality_key(s) != (0, 0)]
+    ranked.sort(key=quality_key, reverse=True)
+    featured = ranked[:100]
+    featured_out = {
+        "generated_at": now_iso,
+        "type": None,
+        "tag": None,
+        "letter_range": None,
+        "count": len(featured),
+        "services": featured,
+    }
+    featured_path = os.path.join(OUT_DIR, "featured.json")
+    featured_size = write_slice(featured_path, featured_out)
+    featured_size_kb = featured_size / 1024.0
+    print("  featured.json                                     %6d services  %6.1f KB" % (len(featured), featured_size_kb))
+    manifest_slices.append({
+        "filename": "featured.json",
+        "type": None,
+        "tag": None,
+        "letter_range": None,
+        "count": len(featured),
+        "size_bytes": featured_size,
+        "kind": "featured",
+    })
+
+    # --- Pass 4: manifest ---
     total_size = sum(s["size_bytes"] for s in manifest_slices)
     manifest = {
         "generated_at": now_iso,
