@@ -26,13 +26,16 @@ jobs:
       - name: Run harvest
         run: python scripts/harvest.py
 
+      - name: Generate pre-sliced JSON files
+        run: python scripts/slice_services.py
+
       - name: Commit and push if changed
         run: |
           git config user.name  "gold-402-bot"
           git config user.email "gold-402-bot@24klabs.ai"
-          git add directory/services.json
+          git add directory/services.json directory/by_type/
           if git diff --cached --quiet; then
-            echo "No changes -- services.json unchanged"
+            echo "No changes -- services.json and slices unchanged"
           else
             COUNT=$(python scripts/harvest_summary.py count)
             git commit -m "harvest: CDP Bazaar update (${COUNT} services)"
