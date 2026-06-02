@@ -18,29 +18,28 @@ This is the editorial layer: curated picks with context and badges, backed by an
 
 ## Featured This Month
 
-> ★ **May 2026** — [**The x402 Foundation**](https://www.x402.org) under the [Linux Foundation](https://www.linuxfoundation.org/x402foundation)
+> ★ **June 2026** — [**Fireblocks Agentic Payments Suite**](https://www.fireblocks.com/products/agentic-payments) by [Fireblocks](https://www.fireblocks.com)
 
-[![24K Featured](https://img.shields.io/badge/24K_Featured-2026--05-C0C0C0?style=plastic)](FEATURED.md)
+[![24K Featured](https://img.shields.io/badge/24K_Featured-2026--06-C0C0C0?style=plastic)](FEATURED.md)
 
-On April 2, Coinbase contributed x402 to the Linux Foundation and launched the x402 Foundation with 22 founding members — Adyen, AWS, American Express, Circle, Cloudflare, Google, KakaoPay, Mastercard, Microsoft, Polygon Labs, Shopify, Solana Foundation, Stripe, Thirdweb, Visa, and others. Vendor-neutral governance. Public Technical Charter. The protocol moved from a company product to an open standard.
+Fireblocks — the platform behind $14T+ in secured digital asset transactions — launched its Agentic Payments Suite on May 20 and joined the x402 Foundation. The suite covers the full lifecycle of agent-initiated payments: MPC wallet custody with delegation rules, a merchant-side Gateway for stablecoin acceptance alongside existing payment rails, and a security extension contributed to the x402 protocol spec that adds request integrity and spend governance.
 
-This is the governance story behind April's news. The formation of a neutral foundation is what unlocks enterprise adoption — it happened with Kubernetes, OpenAPI, and Kafka. It is happening now with x402.
+This is the controls layer the protocol was missing. Facilitators verify that a payment is valid. Fireblocks verifies that the agent was authorized to make it. That distinction — and the compliance infrastructure (KYT, Travel Rule, audit trails) baked in by default — is what makes agentic payments deployable in regulated enterprise environments. The ecosystem has been developer-first for its first year. This is the moment it became enterprise-ready.
 
-[Read the full write-up →](articles/2026-05-x402-foundation.md) · [Past features →](FEATURED.md)
+[Read the full write-up →](articles/2026-06-fireblocks-agentic-payments.md) · [Past features →](FEATURED.md)
 
 ---
 
 ## What's New
 
-> **May 2026** — Post-Foundation: the ecosystem builds on a vendor-neutral standard.
+> **June 2026** — Enterprise infrastructure arrives: Fireblocks, Arbitrum, and 169M+ transactions.
 
-- [**x402 Foundation Technical Charter published**](https://github.com/x402-foundation/x402/blob/main/foundation/x402+Technical+Charter+March+31,+2026.pdf) — Formal governance structure: Technical Steering Committee, conformance certification, Apache 2.0 IP policy. No single company holds more than one-third of TSC seats.
-- [**Multi-facilitator conformance program launches**](https://www.linuxfoundation.org/x402foundation) — The Foundation's conformance framework means facilitators can now compete on a level spec. Cloudflare, Polygon, Stellar, and AsterPay (EU/MiCA-compliant) are conformant alongside Coinbase CDP.
-- [**Coinbase usage-based pricing for agentic compute**](https://coinspectator.com/cryptonews/2026/04/10/coinbase-moves-x402-protocol-to-usage-based-model-for-agentic-ai-tasks/) — New pricing model lets AI agents pay for compute resources based on actual usage rather than fixed rates. Aligns cost with value at the per-task level.
-- [**x402 V2 retrospective: 100M+ real-world transactions**](https://www.cobo.com/post/what-is-x402) — x402 V2 launched December 2025 with multi-chain support and scalable SDK architecture. Now documented with production data from 100M+ transactions.
-- [**Visa Intelligent Commerce + x402 live**](https://pinionnewswire.com/press-release/nevermineds-visa-intelligent-commerce-x402-integration-unlocks-agentic-commerce/) — AI agents can now spend delegated credit card authority via Visa TAP + x402. First traditional credit rail integrated at the protocol level.
-- [**Dexter DAO becomes #1 x402 facilitator by volume**](https://github.com/Dexter-DAO/dexter-x402-sdk) — Decentralized facilitator surpassed Coinbase in daily transaction volume and now handles approximately 50% of x402 traffic. Chain-agnostic v2 SDK with client, server, React hooks, and Express middleware.
-- [**AWS Bedrock AgentCore Payments launches in preview**](https://aws.amazon.com/blogs/industries/x402-and-agentic-commerce-redefining-autonomous-payments-in-financial-services/) — AWS-managed x402 wallet and payment infrastructure natively integrated into Amazon Bedrock agent workflows, with policy controls and audit trails. Launched May 7, 2026.
+- [**Fireblocks Agentic Payments Suite**](https://www.fireblocks.com/products/agentic-payments) — Full-lifecycle agentic payment infrastructure from the $14T digital asset custody platform. MPC agentic wallets with delegation rules, merchant Gateway for stablecoin acceptance, and a security extension to the x402 spec (request integrity + spend governance). Joined the x402 Foundation May 20, 2026. [★ June Featured Pick →](articles/2026-06-fireblocks-agentic-payments.md)
+- [**x402 live on Arbitrum**](https://blog.arbitrum.foundation/x402-payments-on-arbitrum/) — Arbitrum confirmed x402 deployment on May 15. x402 now runs natively on Base, Ethereum, Arbitrum, Polygon, and Solana. EVM coverage is effectively complete.
+- [**169M+ transactions, 590k+ buyers, 100k+ sellers**](https://www.coinbase.com/blog/introducing-amazon-bedrock-agentcore-payments-powered-by-x402-and-coinbase) — Updated ecosystem stats from Coinbase's AWS Bedrock launch post. Grew from 50M to 169M transactions in roughly six weeks post-Foundation launch.
+- [**AWS Bedrock AgentCore Payments — now production**](https://www.coinbase.com/blog/introducing-amazon-bedrock-agentcore-payments-powered-by-x402-and-coinbase) — AWS-managed x402 wallet and payment infrastructure natively integrated into Amazon Bedrock agent workflows. Moved from preview to production.
+- [**LayerZero joins x402 Foundation**](https://x402.org/ecosystem) — Cross-chain infrastructure added to the Foundation roster. Enables x402 payments to bridge across chains without manual routing at the application layer.
+- [**Quant Network joins x402 Foundation**](https://x402.org/ecosystem) — Interoperability and programmable-money infrastructure joins Foundation governance. Expands the enterprise interoperability story for regulated deployments.
 
 ---
 

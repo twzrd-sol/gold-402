@@ -6,6 +6,18 @@ Selection criteria are documented in [CONTRIBUTING.md](CONTRIBUTING.md#24k-featu
 
 ---
 
+## June 2026 — Fireblocks Agentic Payments Suite
+
+> [**Fireblocks Agentic Payments Suite**](https://www.fireblocks.com/products/agentic-payments) by [Fireblocks](https://www.fireblocks.com)
+
+[![24K Featured](https://img.shields.io/badge/24K_Featured-2026--06-C0C0C0?style=plastic)](CONTRIBUTING.md#24k-featured-tier)
+
+Fireblocks launched its Agentic Payments Suite on May 20, 2026 and joined the x402 Foundation. The platform — which has secured $14T+ in digital asset transactions — delivered the enterprise controls layer the protocol had been missing: MPC agentic wallets with delegation rules, a merchant Gateway for stablecoin payment acceptance, and a formal security extension to the x402 spec adding request integrity and spend governance. Built-in KYT, Travel Rule compliance, and structured audit trails make regulated enterprise deployments viable for the first time.
+
+[**→ Read the full write-up**](articles/2026-06-fireblocks-agentic-payments.md)
+
+---
+
 ## May 2026 — The x402 Foundation
 
 > [**x402 Foundation**](https://www.x402.org) under the [Linux Foundation](https://www.linuxfoundation.org/x402foundation)
