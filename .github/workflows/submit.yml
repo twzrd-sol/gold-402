@@ -16,7 +16,7 @@ jobs:
     timeout-minutes: 10
 
     steps:
-      - name: Checkout main
+      - name: Checkout main branch
         uses: actions/checkout@v4
         with:
           ref: main
@@ -32,11 +32,9 @@ jobs:
         env:
           PR_BODY: ${{ github.event.pull_request.body }}
         run: |
-          # Look for a URL in the PR body -- format: "URL: https://..."
           URL=$(echo "$PR_BODY" | \
             grep -oP '(?i)(url|endpoint|service):\s*\K(https?://[^\s]+)' | head -1)
           if [ -z "$URL" ]; then
-            # Fallback: grab the first https:// URL in the body
             URL=$(echo "$PR_BODY" | \
               grep -oP 'https?://[^\s\"]+' | head -1)
           fi
@@ -49,9 +47,6 @@ jobs:
           echo "No URL found in PR body. Please include your endpoint URL."
           echo "Format: URL: https://your-service.com/api/endpoint"
           exit 1
-
-      - name: Checkout main branch for services.json
-        run: git checkout origin/main -- directory/services.json
 
       - name: Run submission check
         id: check
