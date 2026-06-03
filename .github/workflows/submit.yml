@@ -16,10 +16,10 @@ jobs:
     timeout-minutes: 10
 
     steps:
-      - name: Checkout PR branch
+      - name: Checkout main
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: main
           fetch-depth: 0
 
       - name: Set up Python
@@ -29,13 +29,15 @@ jobs:
 
       - name: Extract submitted URL from PR body
         id: extract_url
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
         run: |
           # Look for a URL in the PR body -- format: "URL: https://..."
-          URL=$(echo "${{ github.event.pull_request.body }}" | \
+          URL=$(echo "$PR_BODY" | \
             grep -oP '(?i)(url|endpoint|service):\s*\K(https?://[^\s]+)' | head -1)
           if [ -z "$URL" ]; then
             # Fallback: grab the first https:// URL in the body
-            URL=$(echo "${{ github.event.pull_request.body }}" | \
+            URL=$(echo "$PR_BODY" | \
               grep -oP 'https?://[^\s\"]+' | head -1)
           fi
           echo "url=$URL" >> "$GITHUB_OUTPUT"
