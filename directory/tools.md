@@ -29,6 +29,7 @@ Development tools, CLI utilities, monitoring, analytics, and CI/CD integrations 
 - [Agent Forensics](https://www.npmjs.com/package/agent-forensics) — Agent cost observability for Claude Code. Analyzes JSONL session logs: per-model cost breakdown, cache efficiency, waste patterns (model misallocation, debug loops, sub-agent sprawl). Free CLI: `npx agent-forensics analyze`. x402 API at $5/$15 tiers on Base.
 - [Valoria](https://x402.valoria.net) — x402 market intelligence with revenue rankings, service analysis, pricing data across 90K+ indexed services and $148M+ in tracked on-chain volume.
 - [x402station](https://x402station.com) [![24K Verified](https://img.shields.io/badge/24K_Verified-2026--05-D4AF37?style=plastic)](../CONTRIBUTING.md) — Real-time monitoring and discovery platform for 20,000+ x402 endpoints. Probes every 10 minutes, tracks health scores, uptime, and latency. MCP server for agent access included.
+- [ToolMeter](https://snappedai.com/toolmeter/) — MCP/x402 seller-readiness tool with pricing metadata, `.well-known/x402`, OpenAPI, agent metadata, listing kit, and buyer-safety checks for paid endpoint launches.
 - [agenteconomy.to](https://agenteconomy.to) — Real-time dashboard tracking agentic economy across x402, ERC-8004, ERC-8183, and MPP protocols on 8 chains. Refreshes every 6 hours.
 - [Dune Analytics x402](https://dune.com/x402) — On-chain metrics: transaction volumes, chain-by-chain analytics, facilitator comparison, revenue/fee metrics.
 
