@@ -7,6 +7,8 @@
 import json
 import re
 import sys
+import time
+import urllib.error
 import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
@@ -225,10 +227,22 @@ def make_id(resource_url):
 # ---------------------------------------------------------------------------
 
 def fetch_page(offset):
+    # RT-007: retry with exponential backoff on 429 rate limit responses
     url = f"{CDP_URL}?limit={PAGE_SIZE}&offset={offset}"
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
-    with urllib.request.urlopen(req, timeout=30) as resp:
-        return json.loads(resp.read().decode("utf-8"))
+    max_retries = 3
+    for attempt in range(max_retries):
+        try:
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                return json.loads(resp.read().decode("utf-8"))
+        except urllib.error.HTTPError as e:
+            if e.code == 429:
+                wait = 2 ** attempt * 5  # 5s, 10s, 20s
+                print(f"[harvest] Rate limited at offset {offset}. Waiting {wait}s...")
+                time.sleep(wait)
+                continue
+            raise
+    raise RuntimeError(f"Max retries exceeded on rate limit at offset {offset}")
 
 
 # ---------------------------------------------------------------------------
