@@ -323,10 +323,12 @@ def main():
     })
 
     # --- Pass 4: manifest ---
+    active_count = sum(1 for s in services if s.get("status") == "active")
     total_size = sum(s["size_bytes"] for s in manifest_slices)
     manifest = {
         "generated_at": now_iso,
         "total_services": len(services),
+        "active_count": active_count,
         "slice_count": len(manifest_slices),
         "total_slice_size_bytes": total_size,
         "slices": manifest_slices,

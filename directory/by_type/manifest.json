@@ -1,6 +1,7 @@
 {
-  "generated_at": "2026-06-05T20:04:16Z",
+  "generated_at": "2026-06-05T20:11:07Z",
   "total_services": 29819,
+  "active_count": 29819,
   "slice_count": 39,
   "total_slice_size_bytes": 26310337,
   "slices": [
