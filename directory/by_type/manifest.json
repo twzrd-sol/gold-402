@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-06-05T20:11:07Z",
-  "total_services": 29819,
-  "active_count": 29819,
+  "generated_at": "2026-06-05T20:20:04Z",
+  "total_services": 29821,
+  "active_count": 29821,
   "slice_count": 39,
-  "total_slice_size_bytes": 26310337,
+  "total_slice_size_bytes": 26311965,
   "slices": [
     {
       "filename": "directory-aggregator.json",
       "type": "Directory / Aggregator",
       "tag": null,
       "letter_range": null,
-      "count": 182,
-      "size_bytes": 156556
+      "count": 183,
+      "size_bytes": 157389
     },
     {
       "filename": "facilitator.json",
@@ -74,8 +74,8 @@
       "type": "API / Service",
       "tag": "AI",
       "letter_range": null,
-      "count": 676,
-      "size_bytes": 545599
+      "count": 677,
+      "size_bytes": 546394
     },
     {
       "filename": "api-service-agent-automation.json",
