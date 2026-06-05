@@ -1,6 +1,9 @@
 # scripts/harvest.py
-# Gold-402: CDP Bazaar harvest pipeline
-# Paginates the full CDP Bazaar catalog, normalizes to the Gold-402 schema,
+# Gold-402: multi-source harvest pipeline
+# Sources:
+#   1. CDP Bazaar  -- paginates full catalog, raw endpoint data
+#   2. Agentic.market -- parses /api/markdown for curated named-brand services
+# Normalizes both sources to the Gold-402 schema, deduplicates by ID,
 # writes to directory/services.json.
 # No external deps -- pure stdlib.
 
@@ -13,10 +16,11 @@ import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
 
-CDP_URL = "https://api.cdp.coinbase.com/platform/v2/x402/discovery/resources"
-PAGE_SIZE = 500
+CDP_URL     = "https://api.cdp.coinbase.com/platform/v2/x402/discovery/resources"
+AGENTIC_URL = "https://agentic.market/api/markdown"
+PAGE_SIZE   = 500
 OUTPUT_PATH = "directory/services.json"
-USER_AGENT = "Gold-402-Harvester/1.0 (https://24klabs.ai/gold-402)"
+USER_AGENT  = "Gold-402-Harvester/1.0 (https://24klabs.ai/gold-402)"
 
 # Canonical network map -- CDP uses EIP-155 chain IDs and Solana genesis hash
 NETWORK_MAP = {
@@ -246,6 +250,150 @@ def fetch_page(offset):
 
 
 # ---------------------------------------------------------------------------
+# Agentic.market fetch + normalize
+# ---------------------------------------------------------------------------
+
+# Category → domain tags mapping for Agentic.market categories
+AGENTIC_DOMAIN_MAP = {
+    "Inference":  ["AI"],
+    "Data":       ["Data"],
+    "Search":     ["Developer Tools"],
+    "Media":      ["Media"],
+    "Social":     ["Agent / Automation"],
+    "Trading":    ["Finance / DeFi"],
+    "Infra":      ["Infrastructure"],
+    "Storage":    ["Storage"],
+    "Travel":     ["Data"],
+    "Other":      ["Developer Tools"],
+}
+
+# Category → service type mapping
+AGENTIC_TYPE_MAP = {
+    "Inference":  "API / Service",
+    "Data":       "API / Service",
+    "Search":     "API / Service",
+    "Media":      "API / Service",
+    "Social":     "API / Service",
+    "Trading":    "API / Service",
+    "Infra":      "Infrastructure",
+    "Storage":    "API / Service",
+    "Travel":     "API / Service",
+    "Other":      "API / Service",
+}
+
+
+def fetch_agentic_markdown():
+    """Fetch the Agentic.market /api/markdown endpoint."""
+    req = urllib.request.Request(AGENTIC_URL, headers={"User-Agent": USER_AGENT})
+    try:
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            return resp.read().decode("utf-8")
+    except Exception as e:
+        print(f"[harvest] WARNING: could not reach Agentic.market: {e}", file=sys.stderr)
+        return None
+
+
+def parse_agentic_markdown(md, now_iso):
+    """
+    Parse the Agentic.market markdown table into Gold-402 service records.
+
+    Table format:
+      ### Category
+      | Service | Description | Price | Networks |
+      |---------|-------------|-------|----------|
+      | **Name** | description | $X USDC, $Y USDC | Base, Solana |
+    """
+    import re as _re
+
+    cat_pat = _re.compile(r"^### (.+)$")
+    row_pat = _re.compile(r"^\| \*\*(.+?)\*\* \| (.+?) \| (.+?) \| (.+?) \|")
+
+    current_cat = "Other"
+    services = []
+    seen_ids = set()
+
+    for line in md.split("\n"):
+        cm = cat_pat.match(line)
+        if cm:
+            current_cat = cm.group(1).strip()
+            continue
+
+        rm = row_pat.match(line)
+        if not rm:
+            continue
+
+        name        = rm.group(1).strip()
+        description = rm.group(2).strip()
+        prices_raw  = rm.group(3).strip()
+        networks_raw = rm.group(4).strip()
+
+        # Parse prices: match "$0.001" patterns (may be escaped as \$)
+        price_strs = _re.findall(r"\$(\d+\.?\d*)", prices_raw)
+        prices = []
+        for p in price_strs:
+            try:
+                prices.append(float(p))
+            except ValueError:
+                pass
+
+        price_min = min(prices) if prices else None
+        price_max = max(prices) if len(prices) > 1 else None
+
+        # Network: prefer base
+        nets_lower = networks_raw.lower()
+        if "base" in nets_lower:
+            network = "base"
+        elif "solana" in nets_lower:
+            network = "solana"
+        else:
+            network = "other"
+
+        # Build service ID: "agentic-" + slugified name
+        svc_id = "agentic-" + slugify(name)
+        if svc_id in seen_ids:
+            continue
+        seen_ids.add(svc_id)
+
+        domain_tags = AGENTIC_DOMAIN_MAP.get(current_cat, ["Developer Tools"])
+        svc_type    = AGENTIC_TYPE_MAP.get(current_cat, "API / Service")
+
+        services.append({
+            "id":               svc_id,
+            "name":             name,
+            "short_desc":       description[:160],
+            "full_desc":        None,
+            "website_url":      None,
+            "api_base_url":     None,
+            "endpoint_path":    None,
+            "type":             svc_type,
+            "domain_tags":      domain_tags,
+            "logo_url":         None,
+            "price_min":        price_min,
+            "price_max":        price_max,
+            "network":          network,
+            "network_raw":      networks_raw,
+            "token":            "USDC",
+            "facilitator":      "cdp",
+            "pay_to":           None,
+            "verified":         0,
+            "last_verified":    None,
+            "verify_status":    "pending",
+            "verify_failures":  0,
+            "source":           "agentic-market",
+            "submitted_by":     None,
+            "submitted_at":     now_iso,
+            "status":           "active",
+            "quality_calls_30d":  None,
+            "quality_payers_30d": None,
+        })
+
+    return services
+
+
+
+
+
+# ---------------------------------------------------------------------------
 # Service normalization
 # ---------------------------------------------------------------------------
 
@@ -380,7 +528,28 @@ def main():
             print(f"[harvest] WARNING: offset={offset} failed: {e}", file=sys.stderr)
         offset += PAGE_SIZE
 
+    cdp_count = len(services)
+    print(f"[harvest] CDP Bazaar: {cdp_count} unique services")
+
+    # ------------------------------------------------------------------
+    # Agentic.market: fetch + merge curated brand services
+    # ------------------------------------------------------------------
+    print("[harvest] Fetching Agentic.market catalog...")
+    agentic_md = fetch_agentic_markdown()
+    agentic_added = 0
+    if agentic_md:
+        agentic_services = parse_agentic_markdown(agentic_md, now_iso)
+        for svc in agentic_services:
+            if svc["id"] not in seen_ids:
+                seen_ids.add(svc["id"])
+                services.append(svc)
+                agentic_added += 1
+        print(f"[harvest] Agentic.market: {len(agentic_services)} parsed, {agentic_added} new (non-duplicate)")
+    else:
+        print("[harvest] Agentic.market: skipped (fetch failed)")
+
     # Sort by quality (payers desc, then calls desc) so best services bubble up
+    # Agentic entries have None quality so they sort to the end, behind CDP entries
     services.sort(
         key=lambda s: (
             -(s.get("quality_payers_30d") or 0),
@@ -390,7 +559,8 @@ def main():
 
     output = {
         "generated_at": now_iso,
-        "source":       "cdp-bazaar",
+        "sources":      ["cdp-bazaar", "agentic-market"],
+        "source":       "cdp-bazaar",  # kept for backwards compat
         "count":        len(services),
         "services":     services,
     }
@@ -399,6 +569,8 @@ def main():
         json.dump(output, f, indent=2, ensure_ascii=True)
 
     print(f"[harvest] Done. {len(services)} unique services written to {OUTPUT_PATH}")
+    print(f"[harvest]   CDP Bazaar:      {cdp_count}")
+    print(f"[harvest]   Agentic.market:  {agentic_added}")
 
 
 if __name__ == "__main__":
